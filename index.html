@@ -25,7 +25,7 @@
           <form action="#">
             <div class="row title">
               <label>Title</label>
-              <input type="text" id="title-value" />
+              <input type="text" id="title-value" autocomplete="off" />
             </div>
 
             <div class="row description">
@@ -48,36 +48,8 @@
       </a>
 
       <!-- note -->
-      <li class="note">
-        <div class="details">
-          <p id="title-el">This is a Title</p>
-          <span id="description-el"
-            >Lorem ipsum dolor sit amet, consectetur adipisicing elit. Vero
-            natus magnam ullam nemo totam eligendi id officia optio quis sequi
-            veniam, porro similique atque nesciunt, neque, fuga commodi earum
-            odit.</span
-          >
-        </div>
-        <div class="bottom-content">
-          <span id="note-date-el">April 3, 2022</span>
-          <div class="setting" id="setting-el">
-            <i
-              class="fa-solid fa-ellipsis ellipsis"
-              onclick="showMenu(this)"
-            ></i>
-            <ul class="menu">
-              <a href="#" onclick="deleteNote()">
-                <li><i class="fa-solid fa-trash-can"></i>Trash</li>
-              </a>
-              <a href="#" onclick="editNote()">
-                <li><i class="fa-regular fa-pen-to-square"></i>Edit</li>
-              </a>
-            </ul>
-          </div>
-        </div>
-      </li>
+      <div id="note-box"></div>
     </div>
-
     <script src="/js/app.js"></script>
   </body>
 </html>
