@@ -18,21 +18,11 @@
 // when we click setting icon it will add show class to  setting-el element
 // when we click to screan it will remove show class from setting-el element
 let popup = document.querySelector(".popup-box");
-let titleValue = document.getElementById("title-value").value;
-let descriptionValue = document.getElementById("description-value").value;
 let titleEl = document.getElementById("title-el");
 let descriptionEl = document.getElementById("description-el");
 let noteBox = document.getElementById("note-box");
+let settingEl;
 let note = [];
-
-function showMenu(elem) {
-  elem.parentElement.classList.add("show");
-  document.addEventListener("click", (e) => {
-    if (e.target.tagName != "I" || e.target != elem) {
-      elem.parentElement.classList.remove("show");
-    }
-  });
-}
 
 function addNewNote() {
   popup.classList.remove("popup-display-none");
@@ -40,26 +30,32 @@ function addNewNote() {
 function closePopup() {
   popup.classList.add("popup-display-none");
 }
-// console.log(descriptionValue);
-// console.log(descriptionValue);
 function addNote() {
+  let title = document.getElementById("title-value");
+  let description = document.getElementById("description-value");
+  let titleValue = title.value;
+  let descriptionValue = description.value;
+
   let noteData = {
-    title: descriptionValue,
+    title: titleValue,
     description: descriptionValue,
   };
-  // note.push(noteData);
-  // console.log(note);
+  note.push(noteData);
   popup.classList.add("popup-display-none");
+  console.log(note);
   displayNote();
 }
+
 function displayNote() {
-  let noteBoxData = ``;
+  let noteBoxData = `<li class="note">`;
   for (let i = 0; i < note.length; i++) {
-    noteBoxData = `<li class="note">
+    noteBoxData =
+      noteBoxData +
+      `
           <div class="details">
-            <p id="title-el">${note[i].noteData.title}</p>
+            <p id="title-el">${note[i].title}</p>
             <span id="description-el"
-              >${note[i].noteData.description}</span
+              >${note[i].description}</span
             >
           </div>
           <div class="bottom-content">
@@ -67,19 +63,36 @@ function displayNote() {
             <div class="setting" id="setting-el">
               <i
                 class="fa-solid fa-ellipsis ellipsis"
-                onclick="${showMenu(this)}"
+                onclick="showMenu()"
               ></i>
               <ul class="menu">
-                <a href="#" onclick="${deleteNote()}">
+                <a href="#" onclick="deleteNote()">
                   <li><i class="fa-solid fa-trash-can"></i>Trash</li>
                 </a>
-                <a href="#" onclick="${editNote()}">
+                <a href="#" onclick="editNote()">
                   <li><i class="fa-regular fa-pen-to-square"></i>Edit</li>
                 </a>
               </ul>
             </div>
           </div>
-        </li>
 `;
   }
+  noteBoxData = noteBoxData + `</li>`;
+  noteBox.innerHTML = noteBoxData;
+  settingEl = document.getElementById("setting-el");
+}
+function showMenu() {
+  settingEl.classList.add("show");
+  // document.addEventListener("click", (e) => {
+  //   if (e.target.tagName != "I" || e.target != settingEl) {
+  //     settingEl.classList.remove("show");
+  //   }
+  // });
+}
+function editNote() {
+  let popupText = document.getElementById("popup-text");
+  let popupButtonText = document.getElementById("popup-button-text");
+  popup.classList.remove("popup-display-none");
+  popupText.textContent = "hi";
+  popupButtonText.textContent = "hh";
 }
