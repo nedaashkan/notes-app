@@ -15,7 +15,7 @@ body {
   grid-template-columns: repeat(auto-fill, 300px);
   gap: 15px;
 }
-.wrapper li {
+li {
   background-color: #fff;
   list-style: none;
   height: 300px;
@@ -40,13 +40,16 @@ header {
 .add-box {
   flex-direction: column;
   justify-content: center;
+  width: 200px;
+  height: 200px;
+  margin: 20px auto;
 }
 .add-box .icon {
-  width: 78px;
-  height: 78px;
+  width: 50px;
+  height: 50px;
   border-radius: 50%;
   justify-content: center;
-  font-size: 40px;
+  font-size: 30px;
   color: #88abff;
   border: 2px dashed #88abff;
 }
@@ -215,4 +218,7 @@ form :where(input, textarea):focus {
 .popup-display-none {
   opacity: 0;
   pointer-events: none;
+}
+#msg {
+  color: red;
 }

@@ -2,38 +2,38 @@ let title = document.getElementById("title-value");
 let descriptionEl = document.getElementById("description-value");
 let noteBoxEl = document.getElementById("note-box");
 let popup = document.querySelector(".popup-box");
-let noteData = {};
 let popupText = document.getElementById("popup-text");
 let popupButtonText = document.getElementById("popup-button-text");
+let msg = document.getElementById("msg");
 
-function addNewNote() {
-  popupText.textContent = "Add new note";
-  popupButtonText.textContent = "Add note";
-  popup.classList.remove("popup-display-none");
-}
-function closePopup() {
-  popup.classList.add("popup-display-none");
-  title.value = "";
-  descriptionEl.value = "";
-}
-function addNote() {
-  popup.classList.add("popup-display-none");
-  displayNote();
-}
-function displayNote() {
-  if (title.value === "" || descriptionEl.value === "") {
-    alert("title value and description value empty ");
+let noteData = [];
+function getNoteData() {
+  if (descriptionEl.value === "") {
+    msg.textContent = "description not valid";
     title.value = "";
     descriptionEl.value = "";
   } else {
-    noteData["title"] = title.value;
-    noteData["description"] = descriptionEl.value;
-    noteBoxEl.innerHTML += `
-        <li class="note">
+    msg.textContent = "";
+    noteData.push({
+      title: title.value,
+      description: descriptionEl.value,
+    });
+    console.log(noteData);
+    localStorage.setItem("data", JSON.stringify(noteData));
+
+    displayData();
+  }
+}
+
+function displayData() {
+  noteBoxEl.innerHTML = "";
+  noteData.map((x, y) => {
+    return (noteBoxEl.innerHTML += `
+        <li class="note" id=${y}>
             <div class="details">
-              <p id="title-el">${noteData.title}</p>
+              <p id="title-el">${x.title}</p>
               <span id="description-el"
-                >${noteData.description}</span
+                >${x.description}</span
               >
             </div>
             <div class="bottom-content">
@@ -44,29 +44,49 @@ function displayNote() {
                   onclick="showMenu(this)"
                 ></i>
                 <ul class="menu">
-                  <a href="#" onclick="deleteNote(this)">
-                    <li><i class="fa-solid fa-trash-can"></i>Trash</li>
-                  </a>
-                  <a href="#" onclick="editNote(this)">
-                    <li><i class="fa-regular fa-pen-to-square"></i>Edit</li>
-                  </a>
+                    <li onclick="deleteNote(this);"><i class="fa-solid fa-trash-can"></i>Trash</li>
+                    <li onclick="editNote(this)" ><i class="fa-regular fa-pen-to-square"></i>Edit</li>
                 </ul>
               </div>
             </div>
             </li>
-  `;
-    title.value = "";
-    descriptionEl.value = "";
-  }
+  `);
+  });
+  title.value = "";
+  descriptionEl.value = "";
+  popup.classList.add("popup-display-none");
 }
 
+function addNote() {
+  getNoteData();
+}
+
+function addNewNote() {
+  popupText.textContent = "Add new note";
+  popupButtonText.textContent = "Add note";
+  popup.classList.remove("popup-display-none");
+}
+
+function closePopup() {
+  popup.classList.add("popup-display-none");
+  msg.textContent = "";
+  title.value = "";
+  descriptionEl.value = "";
+}
 function showMenu(e) {
   let thisIcon = e.parentElement;
-  thisIcon.classList.add("show");
+  thisIcon.classList.toggle("show");
 }
 
 function deleteNote(e) {
   e.parentElement.parentElement.parentElement.parentElement.remove();
+  console.log(e.parentElement.parentElement.parentElement.parentElement.id);
+  noteData.splice(
+    e.parentElement.parentElement.parentElement.parentElement.id.id,
+    1
+  );
+  localStorage.setItem("data", JSON.stringify(noteData));
+  console.log(noteData);
 }
 
 function editNote(e) {
@@ -85,4 +105,13 @@ function editNote(e) {
   title.value = thisTitle.textContent;
   descriptionEl.value = thisDescription.textContent;
   e.parentElement.parentElement.parentElement.parentElement.remove();
+  noteData.splice(
+    e.parentElement.parentElement.parentElement.parentElement.id.id,
+    1
+  );
 }
+(() => {
+  noteData = JSON.parse(localStorage.getItem("data")) || [];
+  console.log(noteData);
+  displayData();
+})();
