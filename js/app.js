@@ -13,12 +13,21 @@ function getNoteData() {
     title.value = "";
     descriptionEl.value = "";
   } else {
+    const currentDate = new Date();
+    const options = {
+      weekday: "long",
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+    };
     msg.textContent = "";
+    let date = JSON.stringify(currentDate.toLocaleDateString("en-us", options));
+    let noteDate = date.slice(1, 21);
     noteData.push({
       title: title.value,
       description: descriptionEl.value,
+      date: noteDate,
     });
-    console.log(noteData);
     localStorage.setItem("data", JSON.stringify(noteData));
 
     displayData();
@@ -37,7 +46,7 @@ function displayData() {
               >
             </div>
             <div class="bottom-content">
-              <span id="note-date-el">April 3, 2022</span>
+              <span id="note-date-el">${x.date}</span>
               <div class="setting" id="setting-el">
                 <i
                   class="fa-solid fa-ellipsis ellipsis"
